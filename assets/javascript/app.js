@@ -78,6 +78,7 @@ var triviaGame = {
     answeredWrong: 0,
     brainFroze: 0,
     gameIterator: 0,
+    qTimer: null,
 
     Init() {
         this.anA = "";
@@ -86,6 +87,9 @@ var triviaGame = {
         this.brainFroze = 0;
         this.gameIterator = 0;
 
+        // note: Randomize question order
+        this.Shuffle(this.smartyPants);
+
         this.$start.detach();
         this.$gameDiv.empty();
         this.PlayGame();
@@ -93,7 +97,7 @@ var triviaGame = {
     PlayGame() {
         this.$gameDiv.html(this.$timerDiv);
         this.$gameDiv.append(this.$questionDiv);
-        // note: Randomize question order
+
         this.ShowQuestion(this.smartyPants[this.gameIterator]);
     },
     ShowQuestion(item) {
@@ -108,6 +112,8 @@ var triviaGame = {
         // console.log(this.smartyPants.length);
 
         // note: Randomize answer order
+        this.Shuffle(item.answers);
+
         for (i = 0; i < item.answers.length; i++) {
             var anAnswer = $("<p>");
             anAnswer.attr("id", i);
@@ -136,6 +142,16 @@ var triviaGame = {
                 clearInterval(triviaGame.qTimer);
                 triviaGame.ShowAfter("timeout");
             }
+        }
+    },
+
+    // Found this on stack overflow.  Seems to work well.
+    Shuffle(theArray) {
+        for (i = theArray.length-1; i > 0; i--) {
+            var j = Math.floor(Math.random()*(i+1));
+            var temp = theArray[i];
+            theArray[i] = theArray[j];
+            theArray[j] = temp;
         }
     },
     ShowAfter(reason) {
