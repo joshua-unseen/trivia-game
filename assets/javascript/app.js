@@ -60,18 +60,16 @@ var triviaGame = {
 
     $gameDiv: $("#game-div"),
     $timerDiv: $("<div>", {
-        "id": "timer-div",
         "html": "<p>Time left: <span id = \"down-count\"></span></p>"
     }),
-    $questionDiv: $("<div>", { "id": "q-div" }),
+    $questionDiv: $("<div>"),
     $endDiv: $("<div>", {
-        "html": "<h1>Game over</h1>"
+        "html": "<h3>Game over</h3>"
             + "<p>Right answers: <span id=\"good-a\"></span></p>"
             + "<p>Wrong answers: <span id=\"bad-a\"></span></p>"
             + "<p>No answers: <span id=\"timed-out\"></span></p>",
     }),
     $start: $("#start-button"),
-    // $answerElem: $(".answer"),
 
     anA: "",
     answeredRight: 0,
@@ -87,37 +85,40 @@ var triviaGame = {
         this.brainFroze = 0;
         this.gameIterator = 0;
 
-        // note: Randomize question order
+        // Randomize question order
         this.Shuffle(this.smartyPants);
 
         this.$start.detach();
         this.$gameDiv.empty();
         this.PlayGame();
     },
+
     PlayGame() {
         this.$gameDiv.html(this.$timerDiv);
         this.$gameDiv.append(this.$questionDiv);
 
         this.ShowQuestion(this.smartyPants[this.gameIterator]);
     },
-    ShowQuestion(item) {
-        var countDown = 5;  //30;
 
-        var theQuestion = triviaGame.$questionDiv.html("<p>");
+    ShowQuestion(item) {
+        var countDown = 30;
+
+        var theQuestion = $("<p>");
         theQuestion.text(item.question);
+        this.$questionDiv.html(theQuestion);
 
         $("#down-count").text(countDown);
         this.gameIterator++;
         // console.log(this.gameIterator);
         // console.log(this.smartyPants.length);
 
-        // note: Randomize answer order
+        // Randomize answer order
         this.Shuffle(item.answers);
 
         for (i = 0; i < item.answers.length; i++) {
-            var anAnswer = $("<p>");
+            var anAnswer = $("<a href=\"#\">");
             anAnswer.attr("id", i);
-            anAnswer.addClass("answers");
+            anAnswer.addClass("answer");
             anAnswer.text(item.answers[i].answerString);
             if (item.answers[i].val) {
                 this.anA = i;
@@ -126,14 +127,8 @@ var triviaGame = {
             triviaGame.$questionDiv.append(anAnswer);
         }
 
-        $(".answers").click(function () { triviaGame.HandleClick($(this).attr("id")) });
+        $(".answer").click(function () { triviaGame.HandleClick($(this).attr("id")) });
         this.qTimer = setInterval(TimerDisplay, 1000);
-
-        // if (this.gameIterator < this.smartyPants.length){
-        //     setTimeout(() => {
-        //         this.ShowQuestion(this.smartyPants[this.gameIterator]);
-        //     }, 30000);
-        // }
 
         function TimerDisplay() {
             countDown--;
@@ -147,13 +142,14 @@ var triviaGame = {
 
     // Found this on stack overflow.  Seems to work well.
     Shuffle(theArray) {
-        for (i = theArray.length-1; i > 0; i--) {
-            var j = Math.floor(Math.random()*(i+1));
-            var temp = theArray[i];
-            theArray[i] = theArray[j];
-            theArray[j] = temp;
+        for (i = theArray.length-1; i > 0; i--) {   // i counts down from the end of the array
+            var j = Math.floor(Math.random()*(i+1));    // j is a random number between 0 and the current value of i
+            var temp = theArray[i];     // store the value at [i] in a temp variable
+            theArray[i] = theArray[j];  // put the value at [j] (our random number) into [i]
+            theArray[j] = temp;         // put the value in temp (originally at [i]) into [j]
         }
     },
+
     ShowAfter(reason) {
         var timeout = 3000;
         this.$gameDiv.empty();
@@ -182,22 +178,23 @@ var triviaGame = {
             }, timeout);
         }
     },
+
     ShowSummary() {
         this.$gameDiv.html(this.$endDiv);
         $("#good-a").text(this.answeredRight);
         $("#bad-a").text(this.answeredWrong);
         $("#timed-out").text(this.brainFroze);
-        this.$gameDiv.append(this.$start);
+        this.$start.text("Go Again!");
+        this.$endDiv.append(this.$start);
     },
+
     HandleClick(clickedOn) {
         clearInterval(this.qTimer);
-        if (clickedOn == this.anA) {
+        if (parseInt(clickedOn) === this.anA) {
             this.ShowAfter("right");
         }
         else {
             this.ShowAfter("wrong");
         }
     },
-    HandleTimeout() { },
-
 }

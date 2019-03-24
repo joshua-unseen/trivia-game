@@ -1,0 +1,16 @@
+/* font-family: 'ZCOOL KuaiLe', cursive;
+font-family: 'Share', cursive; */
+
+html {
+    font-family: 'Share', cursive;
+    font-size: 200%;
+    text-align: center;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'ZCOOL KuaiLe', cursive;
+}
+
+.answer {
+    display: block;
+}
