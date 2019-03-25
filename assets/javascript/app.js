@@ -116,15 +116,17 @@ var triviaGame = {
         this.Shuffle(item.answers);
 
         for (i = 0; i < item.answers.length; i++) {
+            var pgrph = $("<p>");
             var anAnswer = $("<a href=\"#\">");
             anAnswer.attr("id", i);
             anAnswer.addClass("answer");
-            anAnswer.text(item.answers[i].answerString);
+            anAnswer.html(item.answers[i].answerString);
+            pgrph.append(anAnswer);
             if (item.answers[i].val) {
                 this.anA = i;
                 // console.log(this.anA);
             }
-            triviaGame.$questionDiv.append(anAnswer);
+            triviaGame.$questionDiv.append(pgrph);
         }
 
         $(".answer").click(function () { triviaGame.HandleClick($(this).attr("id")) });
@@ -155,15 +157,15 @@ var triviaGame = {
         this.$gameDiv.empty();
         switch (reason) {
             case "timeout":
-                this.$gameDiv.text("Out of time!");
+                this.$gameDiv.html("<h3>Out of time!</h3>");
                 this.brainFroze++;
                 break;
             case "wrong":
-                this.$gameDiv.text("Wrong!");
+                this.$gameDiv.html("<h3>Wrong!</h3>");
                 this.answeredWrong++;
                 break;
             case "right":
-                this.$gameDiv.text("Correct!");
+                this.$gameDiv.html("<h3>Correct!</h3>");
                 this.answeredRight++;
                 break;
         }
@@ -181,7 +183,7 @@ var triviaGame = {
 
     ShowSummary() {
         this.$gameDiv.html(this.$endDiv);
-        $("#good-a").text(this.answeredRight);
+        $("#good-a").html(this.answeredRight);
         $("#bad-a").text(this.answeredWrong);
         $("#timed-out").text(this.brainFroze);
         this.$start.text("Go Again!");

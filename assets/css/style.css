@@ -2,15 +2,58 @@
 font-family: 'Share', cursive; */
 
 html {
-    font-family: 'Share', cursive;
-    font-size: 200%;
+    font-family: 'Share', sans-serif;
+    font-size: 18pt;
     text-align: center;
+    line-height: 1.5em;
+}
+
+body {
+    background: blueviolet;
 }
 
 h1, h2, h3, h4, h5, h6 {
     font-family: 'ZCOOL KuaiLe', cursive;
+    line-height: 2em;
+}
+h1 {
+    font-size: 250%;
+}
+h2 {
+    font-size: 200%;
+}
+h3 {
+    font-size: 150%;
+}
+h4 {
+    font-size: 100%;
 }
 
-.answer {
+#container {
     display: block;
+    margin: 50px auto;
+    width: 750px;
+    height: 600px;
+    background: yellow;
+    
+}
+
+p {
+    margin: 10px;
+    padding: 10px;
+}
+
+a {
+    /* margin: 5px;
+    display: block; */
+    padding: 5px 30px;
+    font-size: 24pt;
+    background: green;
+    border: 2px solid orange;
+    text-decoration: none;
+    color: black;
+}
+a:hover {
+    background: blue;
+    color: orange;
 }
