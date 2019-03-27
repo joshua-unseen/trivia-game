@@ -30,30 +30,48 @@
 var triviaGame = {
     smartyPants: [
         {
-            question: "Question 1",
+            question: "Who invented the Slurpee?",
             answers: [
-                { answerString: "answer 1", val: true },
-                { answerString: "answer 2", val: false },
-                { answerString: "answer 3", val: false },
-                { answerString: "answer 4", val: false },
+                { answerString: "Omar Knedlik", val: true },
+                { answerString: "Fred Slurpee", val: false },
+                { answerString: "Brian Gompers", val: false },
+                { answerString: "George Bismarck", val: false },
             ],
         },
         {
-            question: "Question 2",
+            question: "Who first called the moon by telephone?",
             answers: [
-                { answerString: "answer 1", val: true },
-                { answerString: "answer 2", val: false },
-                { answerString: "answer 3", val: false },
-                { answerString: "answer 4", val: false },
+                { answerString: "Richard Nixon", val: true },
+                { answerString: "John F. Kennedy", val: false },
+                { answerString: "Gerald Ford", val: false },
+                { answerString: "Ronald Reagan", val: false },
             ],
         },
         {
-            question: "Question 3",
+            question: "Which US lake caught fire?",
             answers: [
-                { answerString: "answer 1", val: true },
-                { answerString: "answer 2", val: false },
-                { answerString: "answer 3", val: false },
-                { answerString: "answer 4", val: false },
+                { answerString: "Lake Erie", val: true },
+                { answerString: "Lake Victoria", val: false },
+                { answerString: "Lake Superior", val: false },
+                { answerString: "Lake George", val: false },
+            ],
+        },
+        {
+            question: "Who taught Alexander the Great?",
+            answers: [
+                { answerString: "Aristotle", val: true },
+                { answerString: "Plato", val: false },
+                { answerString: "Herbert the Mediocre", val: false },
+                { answerString: "Socrates", val: false },
+            ],
+        },
+        {
+            question: "What are the names of Mars' moons?",
+            answers: [
+                { answerString: "Phobos and Deimos", val: true },
+                { answerString: "Neil and Buzz", val: false },
+                { answerString: "Peter, Paul, and Mary", val: false },
+                { answerString: "Lachesis and Atropos", val: false },
             ],
         },
     ],
@@ -115,18 +133,16 @@ var triviaGame = {
         // Randomize answer order
         this.Shuffle(item.answers);
 
-        for (i = 0; i < item.answers.length; i++) {
-            var pgrph = $("<p>");
+        for (var i = 0; i < item.answers.length; i++) {
             var anAnswer = $("<a href=\"#\">");
             anAnswer.attr("id", i);
             anAnswer.addClass("answer");
             anAnswer.html(item.answers[i].answerString);
-            pgrph.append(anAnswer);
             if (item.answers[i].val) {
                 this.anA = i;
                 // console.log(this.anA);
             }
-            triviaGame.$questionDiv.append(pgrph);
+            triviaGame.$questionDiv.append(anAnswer);
         }
 
         $(".answer").click(function () { triviaGame.HandleClick($(this).attr("id")) });
@@ -144,7 +160,7 @@ var triviaGame = {
 
     // Found this on stack overflow.  Seems to work well.
     Shuffle(theArray) {
-        for (i = theArray.length-1; i > 0; i--) {   // i counts down from the end of the array
+        for (var i = theArray.length-1; i > 0; i--) {   // i counts down from the end of the array
             var j = Math.floor(Math.random()*(i+1));    // j is a random number between 0 and the current value of i
             var temp = theArray[i];     // store the value at [i] in a temp variable
             theArray[i] = theArray[j];  // put the value at [j] (our random number) into [i]
@@ -187,7 +203,7 @@ var triviaGame = {
         $("#bad-a").text(this.answeredWrong);
         $("#timed-out").text(this.brainFroze);
         this.$start.text("Go Again!");
-        this.$endDiv.append(this.$start);
+        this.$endDiv.append("<p>", this.$start);
     },
 
     HandleClick(clickedOn) {

@@ -44,10 +44,11 @@ p {
 }
 
 a {
-    /* margin: 5px;
-    display: block; */
+    display: block;
+    width: 50%;
+    margin: 10px auto;
     padding: 5px 30px;
-    font-size: 24pt;
+    font-size: 22pt;
     background: green;
     border: 2px solid orange;
     text-decoration: none;
