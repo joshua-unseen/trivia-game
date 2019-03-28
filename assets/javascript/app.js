@@ -90,6 +90,7 @@ var triviaGame = {
     $start: $("#start-button"),
 
     anA: "",
+    cheater: "",
     answeredRight: 0,
     answeredWrong: 0,
     brainFroze: 0,
@@ -98,6 +99,7 @@ var triviaGame = {
 
     Init() {
         this.anA = "";
+        this.cheater = "";
         this.answeredRight = 0;
         this.answeredWrong = 0;
         this.brainFroze = 0;
@@ -140,6 +142,7 @@ var triviaGame = {
             anAnswer.html(item.answers[i].answerString);
             if (item.answers[i].val) {
                 this.anA = i;
+                this.cheater = item.answers[i].answerString; // I feel like there's a sneaky way to reference the text of the right answer, but it's eluding me
                 // console.log(this.anA);
             }
             triviaGame.$questionDiv.append(anAnswer);
@@ -160,8 +163,8 @@ var triviaGame = {
 
     // Found this on stack overflow.  Seems to work well.
     Shuffle(theArray) {
-        for (var i = theArray.length-1; i > 0; i--) {   // i counts down from the end of the array
-            var j = Math.floor(Math.random()*(i+1));    // j is a random number between 0 and the current value of i
+        for (var i = theArray.length - 1; i > 0; i--) {   // i counts down from the end of the array
+            var j = Math.floor(Math.random() * (i + 1));    // j is a random number between 0 and the current value of i
             var temp = theArray[i];     // store the value at [i] in a temp variable
             theArray[i] = theArray[j];  // put the value at [j] (our random number) into [i]
             theArray[j] = temp;         // put the value in temp (originally at [i]) into [j]
@@ -173,11 +176,15 @@ var triviaGame = {
         this.$gameDiv.empty();
         switch (reason) {
             case "timeout":
-                this.$gameDiv.html("<h3>Out of time!</h3>");
+                this.$gameDiv.html("<h3>Out of time!</h3>"
+                    + "<p>Correct answer: "
+                    + this.cheater + "</p>");
                 this.brainFroze++;
                 break;
             case "wrong":
-                this.$gameDiv.html("<h3>Wrong!</h3>");
+                this.$gameDiv.html("<h3>Wrong!</h3>"
+                    +"<p>Correct answer: "
+                    + this.cheater + "</p>");
                 this.answeredWrong++;
                 break;
             case "right":
@@ -203,7 +210,7 @@ var triviaGame = {
         $("#bad-a").text(this.answeredWrong);
         $("#timed-out").text(this.brainFroze);
         this.$start.text("Go Again!");
-        this.$endDiv.append("<p>", this.$start);
+        this.$endDiv.append(this.$start);
     },
 
     HandleClick(clickedOn) {
